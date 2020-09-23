@@ -44,3 +44,4 @@ galaxy_info:
 
 dependencies:
   - role: geerlingguy.docker
+  - role: geerlingguy.pip

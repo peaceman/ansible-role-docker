@@ -4,6 +4,14 @@
   import_role:
     name: geerlingguy.docker
 
+- name: Install python docker modules for ansible
+  import_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - name: docker
+      - name: docker-compose
+
 # https://p1ngouin.com/posts/how-to-manage-iptables-rules-with-ufw-and-docker
 # You should install Docker before this rule.
 - name: configure ufw before.init to remove existing rules

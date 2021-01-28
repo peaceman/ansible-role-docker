@@ -60,6 +60,9 @@
   vars:
     ufw_reset: no
     ufw_rules:
-      - { from_ip: '172.16.0.0/12', to_ip: '172.16.0.0/12', rule: allow }
-      - { from_ip: '192.168.0.0/16', to_ip: '192.168.0.0/16', rule: allow }
-      - { from_ip: '10.0.0.0/8', to_ip: '10.0.0.0/8', rule: allow }
+      - { to_ip: '172.16.0.0/12', rule: allow }
+      - { to_ip: '192.168.0.0/16', rule: allow }
+      - { to_ip: '10.0.0.0/8', rule: allow }
+      - { from_ip: '172.16.0.0/12', rule: allow }
+      - { from_ip: '192.168.0.0/16', rule: allow }
+      - { from_ip: '10.0.0.0/8', rule: allow }

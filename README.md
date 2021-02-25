@@ -8,4 +8,7 @@ Allow communication from 172.16.0.0/12 to 172.16.0.0/12
 Requirements
 ------------
 
-* Installed role weareinteractive.ufw
+Installed roles
+* weareinteractive.ufw
+* geerlinguy.docker
+* geerlingguy.pip

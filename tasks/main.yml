@@ -15,3 +15,5 @@
 - name: Firewall setup
   import_tasks: firewall.yml
 
+- name: IPv6
+  import_tasks: ipv6.yml

@@ -1,2 +1,4 @@
 ---
 # defaults file for docker
+docker_ipv6_enabled: true
+docker_ipv6_default_bridge_net_prefixlen: 64

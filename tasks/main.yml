@@ -1,5 +1,15 @@
 ---
 # tasks file for docker
+- name: Update pip
+  import_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - name: setuptools
+        state: latest
+      - name: pip
+        state: latest
+
 - name: Install docker
   import_role:
     name: geerlingguy.docker

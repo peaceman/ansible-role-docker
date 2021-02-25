@@ -42,6 +42,4 @@ galaxy_info:
 
   galaxy_tags: []
 
-dependencies:
-  - role: geerlingguy.docker
-  - role: geerlingguy.pip
+dependencies: []

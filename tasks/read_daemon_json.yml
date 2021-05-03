@@ -1,0 +1,15 @@
+---
+- name: "Check if the docker daemon.json file exists"
+  ansible.builtin.stat:
+    path: "{{ docker_daemon_json_path }}"
+  register: docker_daemon_json_stat
+
+- name: "Read content of the existing docker daemon.json"
+  ansible.builtin.slurp:
+    src: "{{ docker_daemon_json_path }}"
+  register: docker_daemon_json
+  when: docker_daemon_json_stat.stat.exists
+
+- ansible.builtin.set_fact:
+    docker_daemon_json_content: "{{ docker_daemon_json.content | b64decode | from_json }}"
+  when: docker_daemon_json.content is defined

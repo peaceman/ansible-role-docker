@@ -1,40 +1,15 @@
 ---
-- name: Check if docker daemon.json exists
-  ansible.builtin.stat:
-    path: /etc/docker/daemon.json
-  register: json_file
-
-- name: Read docker daemon.json
-  ansible.builtin.command:
-    cmd: cat /etc/docker/daemon.json
-  register: json_string
-  when: json_file.stat.exists is defined and json_file.stat.exists
-
-- name: Parse docker daemon.json
-  set_fact:
-    json_content: "{{ json_string.stdout | default('{}') | from_json }}"
+- include_tasks: read_daemon_json.yml
 
 - name: Generate ipv6 ula network
   ip6ula:
     prefixlen: "{{ docker_ipv6_default_bridge_net_prefixlen }}"
   register: ip6
+  when: docker_daemon_json_content['fixed-cidr-v6'] is not defined
 
-- name: Generate new docker daemon.json address value
-  set_fact:
-    new_ip6_ula_net: "{{ {'fixed-cidr-v6': ip6.network | string } }}"
-
-- name: Debug the values
-  debug:
-    msg: "{{ new_ip6_ula_net | combine(json_content) | combine({'ipv6': docker_ipv6_enabled}) | to_json }}"
-
-- name: Update docker daemon.json
-  copy:
-    dest: /etc/docker/daemon.json
-    content: "{{ new_ip6_ula_net | combine(json_content) | combine({'ipv6': docker_ipv6_enabled}) | to_nice_json }}"
-  register: update_docker_daemon_json
-
-- name: Restart docker daemon
-  ansible.builtin.systemd:
-    name: docker
-    state: restarted
-  when: update_docker_daemon_json.changed
+- include_tasks: update_daemon_json.yml
+  vars:
+    data:
+      fixed-cidr-v6: "{{ ip6.network | string }}"
+      ipv6: "{{ docker_ipv6_enabled }}"
+  when: docker_daemon_json_content['fixed-cidr-v6'] is not defined

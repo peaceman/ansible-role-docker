@@ -27,3 +27,12 @@
 
 - name: IPv6
   import_tasks: ipv6.yml
+
+- name: Enable logrotation for the json-file log driver
+  include_tasks: update_daemon_json.yml
+  vars:
+    data:
+      log-driver: json-file
+      log-opts:
+        max-size: 100m
+        max-file: "10"

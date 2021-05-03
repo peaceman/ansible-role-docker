@@ -1,0 +1,14 @@
+---
+- include_tasks: read_daemon_json.yml
+
+- name: Update docker daemon.json
+  ansible.builtin.copy:
+    dest: "{{ docker_daemon_json_path }}"
+    content: "{{ docker_daemon_json_content | default({}) | combine(data | mandatory) | to_nice_json }}"
+  register: docker_daemon_json_updated
+
+- name: Restart docker daemon
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+  when: docker_daemon_json_updated.changed
